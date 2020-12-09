@@ -219,4 +219,8 @@ main {
         font-size: 26px;
         line-height: 32px;
     }
+
+    .intro__text {
+        line-height: 26px;
+    }
 }
