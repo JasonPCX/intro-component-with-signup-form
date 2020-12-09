@@ -7,24 +7,27 @@ signupForm.addEventListener('submit', ev => {
 const controlElements = signupForm.querySelectorAll('.form__control');
 controlElements.forEach( control => {
     const input = control.querySelector('input');
+    const errorSmall = control.querySelector('small');
+    let errorMsg = '';
     input.addEventListener('blur', () => {
         if (validateEmpty(input)) {
-            showInvalidControl(control, `${input.getAttribute('placeholder')} cannot be empty`);
+            showInvalidControl(control);
+            errorMsg = `${input.getAttribute('placeholder')} cannot be empty`;
         } else {
             if (input.checkValidity()) {
                 showValidControl(control);
             } else {
-                showInvalidControl(control, input.getAttribute('title'));
+                showInvalidControl(control);
+                errorMsg = input.getAttribute('title');
             }
         }
+        errorSmall.textContent = errorMsg;
     });
 } );
 
-function showInvalidControl(control, errorMsg) {
-    const small = control.querySelector('small');
+function showInvalidControl(control) {
     control.classList.remove('valid');
     control.classList.add('invalid');
-    small.innerText = errorMsg;
 }
 
 function showValidControl(control) {
