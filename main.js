@@ -2,29 +2,34 @@ const signupForm = document.getElementById('signup-form');
 
 signupForm.addEventListener('submit', ev => {
     ev.preventDefault();
-    validateForm();
 });
 
-function validateForm() {
-    const controlElements = signupForm.querySelectorAll('.form__control');
-    controlElements.forEach( control => {
-        const input = control.querySelector('input');
-        const small = control.querySelector('small');
+const controlElements = signupForm.querySelectorAll('.form__control');
+controlElements.forEach( control => {
+    const input = control.querySelector('input');
+    input.addEventListener('blur', () => {
         if (validateEmpty(input)) {
-            control.classList.remove('valid');
-            control.classList.add('invalid');
-            small.innerText = `${input.getAttribute('placeholder')} cannot be empty`;
+            showInvalidControl(control, `${input.getAttribute('placeholder')} cannot be empty`);
         } else {
             if (input.checkValidity()) {
-                control.classList.remove('invalid');
-                control.classList.add('valid');
+                showValidControl(control);
             } else {
-                control.classList.remove('valid');
-                control.classList.add('invalid');
-                small.innerText = input.getAttribute('title');
+                showInvalidControl(control, input.getAttribute('title'));
             }
         }
-    } )
+    });
+} );
+
+function showInvalidControl(control, errorMsg) {
+    const small = control.querySelector('small');
+    control.classList.remove('valid');
+    control.classList.add('invalid');
+    small.innerText = errorMsg;
+}
+
+function showValidControl(control) {
+    control.classList.remove('invalid');
+    control.classList.add('valid');
 }
 
 const validateEmpty = ({ value }) => value.trim() === '';
